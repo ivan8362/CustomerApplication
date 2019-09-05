@@ -11,6 +11,7 @@ import org.springframework.data.mongodb.core.query.Update;
 
 public class CustomerRepositoryCustomImpl implements CustomerRepositoryCustom {
 
+    /*
     @Autowired
     MongoTemplate mongoTemplate;
 
@@ -31,4 +32,6 @@ public class CustomerRepositoryCustomImpl implements CustomerRepositoryCustom {
 
         return 0;
     }
+
+     */
 }

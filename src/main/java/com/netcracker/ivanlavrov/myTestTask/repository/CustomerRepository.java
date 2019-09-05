@@ -10,12 +10,7 @@ public interface CustomerRepository extends MongoRepository<Customer, String> {
     @Query("{ 'name' : {$regex: ?0, $options: 'i' }}")
     Customer findByName(final String name);
 
-//    @Query("{ 'name' : {$regex: ?0, $options: 'i' }}")
-//    Customer findByAddress(String address);
-
-//    void deleteCustomer(String id);
-
     @Query( "{ '_id' : {}}" )
-    void updateCustomer(final Customer customer);
+    void updateCustomer(final Customer customer, String id);
 
 }

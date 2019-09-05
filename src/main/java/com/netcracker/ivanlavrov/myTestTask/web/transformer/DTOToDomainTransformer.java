@@ -11,4 +11,13 @@ public class DTOToDomainTransformer {
                 customerDTO.getEmail(),
                 customerDTO.getAddress());
     }
+    /*public static Customer transformWithId(final CustomerDTO customerDTO) {
+        Customer customer = new Customer(customerDTO.getName(),
+                customerDTO.getDescription(),
+                customerDTO.getEmail(),
+                customerDTO.getAddress());
+        customer.setId(customerDTO.getId);
+    }*/
+
+
 }

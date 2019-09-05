@@ -18,8 +18,6 @@ public class Customer {
     private String email;
     private String address;
 
-//    public Customer(){}
-
     public Customer(String name, String description, String email, String address) {
         this.name = name;
         this.address = address;
@@ -32,9 +30,9 @@ public class Customer {
         return "{" +
                 "\"id\" : \"" + id + "\"" +
                 ", \"name\" : \"" + name + "\"" +
-                ", \"description\" = \"" + description + "\"" +
-                ", \"email\" = \"" + email + "\"" +
-                ", \"address = \"" + address + "\"" +
+                ", \"description\" : \"" + description + "\"" +
+                ", \"email\" : \"" + email + "\"" +
+                ", \"address\" : \"" + address + "\"" +
                 "\n}";
     }
 }
