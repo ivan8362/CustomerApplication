@@ -3,7 +3,6 @@ package com.netcracker.ivanlavrov.myTestTask.web.rest.controller;
 import com.netcracker.ivanlavrov.myTestTask.constants.MessageConstants;
 import com.netcracker.ivanlavrov.myTestTask.domain.Customer;
 import com.netcracker.ivanlavrov.myTestTask.exception.CustomerManagementException;
-import com.netcracker.ivanlavrov.myTestTask.exception.CustomerNotFoundException;
 import com.netcracker.ivanlavrov.myTestTask.repository.CustomerRepository;
 import com.netcracker.ivanlavrov.myTestTask.service.CustomerService;
 import com.netcracker.ivanlavrov.myTestTask.web.dto.CustomerDTO;
@@ -18,7 +17,7 @@ import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("/customer")
+@RequestMapping("rest/api/v1/customers")
 public class CustomerController {
 
     @Autowired
@@ -28,28 +27,19 @@ public class CustomerController {
     private CustomerRepository customerRepository;
 
     @ResponseBody
-    @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/create", method = RequestMethod.POST, produces = {
-            MediaType.APPLICATION_JSON_VALUE},
+    @ResponseStatus(value = HttpStatus.CREATED)
+    @PostMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseDTO addCustomer(@Valid @RequestBody CustomerDTO customer){
         ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.SUCCESS,
                 MessageConstants.CUSTOMER_ADDED_SUCCESSFULLY);
-
-        try {
-            customerService.addCustomer(customer);
-        } catch (Exception e) {
-            responseDTO.setStatus(ResponseDTO.Status.FAIL);
-            responseDTO.setMessage(e.getMessage());
-        }
+        customerService.addCustomer(customer);
 
         return responseDTO;
     }
 
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/show-all", method = RequestMethod.GET, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String showAllCustomers() {
 
     List<Customer> customers = this.customerRepository.findAll();
@@ -66,8 +56,7 @@ public class CustomerController {
 
     @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/update/{id}", method = RequestMethod.PUT, produces = {
-            MediaType.APPLICATION_JSON_VALUE},
+    @PutMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE},
             consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseDTO updateCustomer(
             @Valid @RequestBody CustomerDTO customerDTO,
@@ -76,54 +65,31 @@ public class CustomerController {
         ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.SUCCESS,
                 MessageConstants.CUSTOMER_UPDATED_SUCCESSFULLY);
 
-        try {
-            customerService.updateCustomer(
-                    id, customerDTO.getName(), customerDTO.getDescription(),
-                    customerDTO.getEmail(), customerDTO.getAddress());
-        } catch (Exception e) {
-            responseDTO.setStatus(ResponseDTO.Status.FAIL);
-            responseDTO.setMessage(e.getMessage());
-        }
+        customerService.updateCustomer(
+            id, customerDTO.getName(), customerDTO.getDescription(),
+            customerDTO.getEmail(), customerDTO.getAddress());
 
         return responseDTO;
     }
 
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/get/{id}", method = RequestMethod.GET, produces = {MediaType.APPLICATION_JSON_VALUE})
+    @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Customer getCustomer(@PathVariable(name = "id") String id){
-        Customer customer = null;
-
-        try {
-            customer = customerService.getCustomerById(id);
-            return customer;
-        } catch (CustomerManagementException e) {
-//            ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.FAIL,
-//                    e.getMessage());
-            throw new ResponseStatusException(HttpStatus.NOT_FOUND, "The customer doesn't exist.", e);
-        }
+            return customerService.getCustomerById(id);
     }
 
-    @ResponseBody
     @ResponseStatus(value = HttpStatus.OK)
-    @RequestMapping(value = "/delete/{id}", method = RequestMethod.DELETE, produces = {
-            MediaType.APPLICATION_JSON_VALUE})
+    @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public ResponseDTO deleteCustomer(@PathVariable(name = "id") String id){
         ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.SUCCESS,
                 MessageConstants.CUSTOMER_DELETED_SUCCESSFULLY);
-
-        try {
-            customerService.deleteCustomer(id);
-        } catch (Exception e) {
-            responseDTO.setStatus(ResponseDTO.Status.FAIL);
-            responseDTO.setMessage(e.getMessage());
-        }
+        customerService.deleteCustomer(id);
 
         return responseDTO;
     }
 
-    @ExceptionHandler({ CustomerManagementException.class })
+    /*@ExceptionHandler({ CustomerManagementException.class })
     public void handleException() {
             return;
-        }
+        }*/
 }

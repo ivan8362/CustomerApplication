@@ -2,13 +2,16 @@ package com.netcracker.ivanlavrov.myTestTask.service.impl;
 
 import com.netcracker.ivanlavrov.myTestTask.constants.MessageConstants.ErrorMessages;
 import com.netcracker.ivanlavrov.myTestTask.domain.Customer;
+import com.netcracker.ivanlavrov.myTestTask.exception.CustomerAlreadyExistsException;
 import com.netcracker.ivanlavrov.myTestTask.exception.CustomerManagementException;
 import com.netcracker.ivanlavrov.myTestTask.repository.CustomerRepository;
 import com.netcracker.ivanlavrov.myTestTask.service.CustomerService;
 import com.netcracker.ivanlavrov.myTestTask.web.dto.CustomerDTO;
 import com.netcracker.ivanlavrov.myTestTask.web.transformer.DTOToDomainTransformer;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
+import org.springframework.web.server.ResponseStatusException;
 
 import java.util.Optional;
 
@@ -18,23 +21,23 @@ public class CustomerImpl implements CustomerService {
     @Autowired
     private CustomerRepository customerRepository;
 
-    public void addCustomer(CustomerDTO customer) {
-        Customer dbCustomer = customerRepository.findByName(customer.getName());
+    public void addCustomer(CustomerDTO customerDTO) {
+        Customer customer = customerRepository.findByName(customerDTO.getName());
 
-        if (dbCustomer != null) {
-            throw new CustomerManagementException(ErrorMessages.CUSTOMER_ALREADY_EXISTS);
+        if (customer != null) {
+            throw new CustomerAlreadyExistsException(HttpStatus.CONFLICT, ErrorMessages.CUSTOMER_ALREADY_EXISTS);
         }
-        Customer customerToPersist = DTOToDomainTransformer.transform(customer);
+        Customer customerToPersist = DTOToDomainTransformer.transform(customerDTO);
         customerRepository.insert(customerToPersist);
     }
 
     public Customer updateCustomer(String id, String name, String description, String email, String address) {
-        Optional<Customer> dbCustomer = customerRepository.findById(id);
+        Optional<Customer> customer = customerRepository.findById(id);
 
-        if (!dbCustomer.isPresent()) {
-            throw new CustomerManagementException(ErrorMessages.CUSTOMER_DOES_NOT_EXIST);
+        if (!customer.isPresent()) {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMessages.CUSTOMER_DOES_NOT_EXIST);
         }
-        Customer customerToPersist = dbCustomer.get();
+        Customer customerToPersist = customer.get();
         if (!customerToPersist.getName().equals(name)) {
             customerToPersist.setName(name);
         }
@@ -52,20 +55,20 @@ public class CustomerImpl implements CustomerService {
     }
 
     public Customer getCustomerById(String id){
-        Optional<Customer> dbCustomer = customerRepository.findById(id);
-        if (!dbCustomer.isPresent()){
-            throw new CustomerManagementException(ErrorMessages.CUSTOMER_DOES_NOT_EXIST);
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (!customer.isPresent()){
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMessages.CUSTOMER_DOES_NOT_EXIST);
         }
 
-        return dbCustomer.orElseThrow(() -> new CustomerManagementException(ErrorMessages.CUSTOMER_DOES_NOT_EXIST));
+        return customer.get();
     }
 
     public void deleteCustomer(String id){
-        Optional<Customer> dbCustomer = customerRepository.findById(id);
-        if (!dbCustomer.isPresent()){
-            throw new CustomerManagementException(ErrorMessages.CUSTOMER_DOES_NOT_EXIST);
-        } else {
+        Optional<Customer> customer = customerRepository.findById(id);
+        if (customer.isPresent()){
             customerRepository.deleteById(id);
+        } else {
+            throw new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMessages.CUSTOMER_DOES_NOT_EXIST);
         }
     }
 }
