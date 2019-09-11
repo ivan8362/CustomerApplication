@@ -6,6 +6,13 @@ import lombok.Data;
 
 import javax.validation.constraints.NotNull;
 
+/**
+ * This class is a customer object created by some API consumer, but not from repository.
+ * name - customer's legal name.
+ * description - short description about customer.
+ * email - customer's email address. No validation.
+ * address - customer's postal address.
+ */
 @Data
 @JsonInclude(value = JsonInclude.Include.NON_NULL)
 public class CustomerDTO {

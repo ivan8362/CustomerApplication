@@ -2,26 +2,24 @@ package com.netcracker.ivanlavrov.myTestTask.web.rest.controller;
 
 import com.netcracker.ivanlavrov.myTestTask.constants.MessageConstants;
 import com.netcracker.ivanlavrov.myTestTask.domain.Customer;
-import com.netcracker.ivanlavrov.myTestTask.exception.CustomerManagementException;
 import com.netcracker.ivanlavrov.myTestTask.repository.CustomerRepository;
-import com.netcracker.ivanlavrov.myTestTask.service.CustomerService;
+import com.netcracker.ivanlavrov.myTestTask.service.CustomerApi;
 import com.netcracker.ivanlavrov.myTestTask.web.dto.CustomerDTO;
 import com.netcracker.ivanlavrov.myTestTask.web.dto.ResponseDTO;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.server.ResponseStatusException;
 
 import javax.validation.Valid;
 import java.util.List;
 
 @RestController
-@RequestMapping("rest/api/v1/customers")
+@RequestMapping("api/v1/customers")
 public class CustomerController {
 
     @Autowired
-    private CustomerService customerService;
+    private CustomerApi customerApi;
 
     @Autowired
     private CustomerRepository customerRepository;
@@ -33,7 +31,7 @@ public class CustomerController {
     public ResponseDTO addCustomer(@Valid @RequestBody CustomerDTO customer){
         ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.SUCCESS,
                 MessageConstants.CUSTOMER_ADDED_SUCCESSFULLY);
-        customerService.addCustomer(customer);
+        customerApi.addCustomer(customer);
 
         return responseDTO;
     }
@@ -45,6 +43,7 @@ public class CustomerController {
     List<Customer> customers = this.customerRepository.findAll();
 
     String html = "[";
+
     for (Customer customer : customers) {
         html += customer + ",\n";
     }
@@ -65,7 +64,7 @@ public class CustomerController {
         ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.SUCCESS,
                 MessageConstants.CUSTOMER_UPDATED_SUCCESSFULLY);
 
-        customerService.updateCustomer(
+        customerApi.updateCustomer(
             id, customerDTO.getName(), customerDTO.getDescription(),
             customerDTO.getEmail(), customerDTO.getAddress());
 
@@ -75,7 +74,7 @@ public class CustomerController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public Customer getCustomer(@PathVariable(name = "id") String id){
-            return customerService.getCustomerById(id);
+            return customerApi.getCustomerById(id);
     }
 
     @ResponseStatus(value = HttpStatus.OK)
@@ -83,13 +82,8 @@ public class CustomerController {
     public ResponseDTO deleteCustomer(@PathVariable(name = "id") String id){
         ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.SUCCESS,
                 MessageConstants.CUSTOMER_DELETED_SUCCESSFULLY);
-        customerService.deleteCustomer(id);
+        customerApi.deleteCustomer(id);
 
         return responseDTO;
     }
-
-    /*@ExceptionHandler({ CustomerManagementException.class })
-    public void handleException() {
-            return;
-        }*/
 }

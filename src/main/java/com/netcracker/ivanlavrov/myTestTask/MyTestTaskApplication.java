@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
+import org.springframework.boot.web.client.RestTemplateBuilder;
 import org.springframework.context.annotation.Bean;
 import org.springframework.data.mongodb.MongoDbFactory;
 import org.springframework.data.mongodb.core.MongoTemplate;
@@ -13,6 +14,7 @@ import org.springframework.data.mongodb.core.convert.DefaultDbRefResolver;
 import org.springframework.data.mongodb.core.convert.DefaultMongoTypeMapper;
 import org.springframework.data.mongodb.core.convert.MappingMongoConverter;
 import org.springframework.data.mongodb.core.mapping.MongoMappingContext;
+import org.springframework.web.client.RestTemplate;
 
 @SpringBootApplication
 public class MyTestTaskApplication /*implements CommandLineRunner*/ {
@@ -22,6 +24,11 @@ public class MyTestTaskApplication /*implements CommandLineRunner*/ {
 
 	public static void main(String[] args) {
 		SpringApplication.run(MyTestTaskApplication.class, args);
+	}
+
+	@Bean
+	public RestTemplate restTemplate(RestTemplateBuilder builder) {
+		return builder.build();
 	}
 
 	/*
@@ -35,7 +42,6 @@ public class MyTestTaskApplication /*implements CommandLineRunner*/ {
 
 		return mongoTemplate;
 	}
-
 	 */
 	/*
 	@Override
