@@ -38,4 +38,10 @@ public interface CustomerApi {
      * @param id - customer ID.
      */
     void deleteCustomer(String id);
+
+    /**
+     * This method returns String with all customers with all details.
+     * @return String.
+     */
+    String findAll();
 }

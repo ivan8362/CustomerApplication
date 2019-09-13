@@ -12,6 +12,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.stereotype.Service;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.List;
 import java.util.Optional;
 import java.util.logging.Logger;
 
@@ -92,5 +93,18 @@ public class CustomerService implements CustomerApi {
         } else {
             throw new ResponseStatusException(HttpStatus.NOT_FOUND, ErrorMessages.CUSTOMER_DOES_NOT_EXIST);
         }
+    }
+    public String findAll() {
+        List<Customer> customers = this.customerRepository.findAll();
+
+        String html = "[";
+
+        for (Customer customer : customers) {
+            html += customer + ",\n";
+        }
+
+        html += "]";
+
+        return html;
     }
 }

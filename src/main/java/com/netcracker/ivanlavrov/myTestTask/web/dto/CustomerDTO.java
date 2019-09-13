@@ -7,6 +7,7 @@ import lombok.Data;
 import javax.validation.constraints.NotNull;
 
 /**
+ * DTO is data transfer object.
  * This class is a customer object created by some API consumer, but not from repository.
  * name - customer's legal name.
  * description - short description about customer.

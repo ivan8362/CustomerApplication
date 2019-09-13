@@ -12,7 +12,6 @@ import org.springframework.http.MediaType;
 import org.springframework.web.bind.annotation.*;
 
 import javax.validation.Valid;
-import java.util.List;
 
 @RestController
 @RequestMapping("api/v1/customers")
@@ -39,18 +38,7 @@ public class CustomerController {
     @ResponseStatus(value = HttpStatus.OK)
     @GetMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE})
     public String showAllCustomers() {
-
-    List<Customer> customers = this.customerRepository.findAll();
-
-    String html = "[";
-
-    for (Customer customer : customers) {
-        html += customer + ",\n";
-    }
-
-    html += "]";
-
-    return html;
+        return customerApi.findAll();
     }
 
     @ResponseBody
@@ -59,14 +47,13 @@ public class CustomerController {
             consumes = { MediaType.APPLICATION_JSON_VALUE })
     public ResponseDTO updateCustomer(
             @Valid @RequestBody CustomerDTO customerDTO,
-            @PathVariable(name = "id") String id
-            ){
+            @PathVariable(name = "id") String id){
         ResponseDTO responseDTO = new ResponseDTO(ResponseDTO.Status.SUCCESS,
                 MessageConstants.CUSTOMER_UPDATED_SUCCESSFULLY);
 
-        customerApi.updateCustomer(
-            id, customerDTO.getName(), customerDTO.getDescription(),
-            customerDTO.getEmail(), customerDTO.getAddress());
+        customerApi.updateCustomer(id, customerDTO.getName(),
+                customerDTO.getDescription(),
+                customerDTO.getEmail(), customerDTO.getAddress());
 
         return responseDTO;
     }
