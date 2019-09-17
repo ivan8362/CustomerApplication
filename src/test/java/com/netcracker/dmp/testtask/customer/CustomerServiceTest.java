@@ -4,6 +4,7 @@ import com.netcracker.dmp.testtask.customer.clients.EmployeeClient;
 import com.netcracker.dmp.testtask.customer.constants.MessageConstants;
 import com.netcracker.dmp.testtask.customer.controllers.dto.CustomerDTO;
 import com.netcracker.dmp.testtask.customer.entities.Customer;
+import com.netcracker.dmp.testtask.customer.exceptions.CustomerAlreadyExistsException;
 import com.netcracker.dmp.testtask.customer.repositories.CustomerRepository;
 import com.netcracker.dmp.testtask.customer.services.impl.CustomerService;
 import org.junit.Before;
@@ -24,10 +25,15 @@ import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
 import org.springframework.web.server.ResponseStatusException;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static junit.framework.Assert.assertNull;
 import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.willThrow;
+import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.assertThat;
 import static org.mockito.Mockito.*;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
@@ -76,26 +82,33 @@ public class CustomerServiceTest {
         customerRepositoryMock = mock(CustomerRepository.class);
     }
 
-    /*@Test(expected = CustomerAlreadyExistsException.class)
+    @Test(expected = CustomerAlreadyExistsException.class)
     public void whenCustomerIsCreated_thenSuccessMessage() {
         Customer customerMock = null;
+        Optional<Customer> optionalCustomer = new Optional<>(customerMock);
 
-        Mockito.when(customerRepositoryMock.findByName(customerDTOMock.getName())).thenReturn(customerMock);
-        willThrow(new CustomerAlreadyExistsException(
-                HttpStatus.CONFLICT,
-                MessageConstants.ErrorMessages.CUSTOMER_ALREADY_EXISTS)
-                ).given(customerServiceMock)
-                .createCustomer(customerDTOMock);
+        Mockito.when(customerRepositoryMock.findByEmail(customerDTOMock.getEmail())).thenReturn(optionalCustomer);
+        willThrow(new CustomerAlreadyExistsException(anyString()))
+                .given(customerServiceMock)
+                .createCustomer(
+                        customerDTOMock.getName(),
+                        customerDTOMock.getDescription(),
+                        customerDTOMock.getEmail(),
+                        customerDTOMock.getAddress());
         // Act
         try {
-            customerServiceMock.createCustomer(customerDTOMock);
+            customerServiceMock.createCustomer(
+                    customerDTOMock.getName(),
+                    customerDTOMock.getDescription(),
+                    customerDTOMock.getEmail(),
+                    customerDTOMock.getAddress());
             fail("Should throw exceptions");
         } catch (CustomerAlreadyExistsException ex) {}
         // Assert
         then(customerRepositoryMock).should(never()).insert(customerMock);
-    }*/
+    }
 
-    /*@Test
+    @Test
     public void findAll_CustomersFound_ShouldReturnFoundCustomerEntries() throws Exception {
         Customer first = new Customer("name", "description", "email", "address");
         Customer second = new Customer("name1", "description1", "email1", "address1");
@@ -103,9 +116,9 @@ public class CustomerServiceTest {
         List<Customer> customers = new ArrayList<Customer>();
         customers.add(first);
         customers.add(second);
-        when(customerServiceMock.getAllCustomers()).thenReturn(customers.toString());
+        when(customerServiceMock.getAllCustomers()).thenReturn(customers);
 
-        mockMvc.perform(get("api/v1/customers/"))
+        mockMvc.perform(get("/v1/customers/"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$", hasSize(2)))
@@ -120,7 +133,7 @@ public class CustomerServiceTest {
 
         verify(customerServiceMock, times(1)).getAllCustomers();
         verifyNoMoreInteractions(customerServiceMock);
-    }*/
+    }
 
     @Test
     public void getById_CustomerEntryNotFound_ShouldReturnHttpStatusCode404() throws Exception {
@@ -128,7 +141,7 @@ public class CustomerServiceTest {
                 HttpStatus.NOT_FOUND,
                 MessageConstants.ErrorMessages.CUSTOMER_DOES_NOT_EXIST));
 
-        mockMvc.perform(get("/api/v1/customers/{id}", "1"))
+        mockMvc.perform(get("/v1/customers/{id}", "1"))
                 .andExpect(status().isNotFound());
 
         verify(customerServiceMock, times(1)).getCustomerById("1");
@@ -141,7 +154,7 @@ public class CustomerServiceTest {
 
         when(customerServiceMock.getCustomerById("1")).thenReturn(found);
 
-        mockMvc.perform(get("/api/v1/customers/{id}", "1"))
+        mockMvc.perform(get("/v1/customers/{id}", "1"))
                 .andExpect(status().isOk())
                 .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
                 .andExpect(jsonPath("$.name", is("name")))
@@ -152,9 +165,4 @@ public class CustomerServiceTest {
         verify(customerServiceMock, times(1)).getCustomerById("1");
         verifyNoMoreInteractions(customerServiceMock);
     }
-
 }
-//        customerDTO.getName() != null &&
-//        customerDTO.getDescription() != null &&
-//        customerDTO.getEmail() != null &&
-//        customerDTO.getAddress() != null &&
