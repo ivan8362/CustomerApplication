@@ -40,10 +40,10 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
-@ActiveProfiles("test")
+//@ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CustomerServiceTestConfiguration.class})
-@SpringBootTest(classes = CustomerApplication.class)
+@ContextConfiguration(classes = {CustomerServiceTestConfiguration.class, WebAppContext.class})
+//@SpringBootTest(classes = CustomerApplication.class)
 @WebAppConfiguration
 public class CustomerServiceTest {
     private MockMvc mockMvc;
@@ -63,24 +63,6 @@ public class CustomerServiceTest {
 
     @Autowired
     private CustomerDTO customerDTOMock;
-
-    // Not sure if it's needed.
-    @Before
-    public void setUp() {
-        //We have to reset our mock between tests because the mock objects
-        //are managed by the Spring container. If we would not reset them,
-        //stubbing and verified behavior would "leak" from one test to another.
-        Mockito.reset(customerServiceMock);
-
-        mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
-
-    @Before // arrange
-    public void init() {
-        customerServiceMock = mock(CustomerService.class);
-        customerDTOMock = mock(CustomerDTO.class);
-        customerRepositoryMock = mock(CustomerRepository.class);
-    }
 
     @Test(expected = CustomerAlreadyExistsException.class)
     public void whenCustomerIsCreated_thenSuccessMessage() {

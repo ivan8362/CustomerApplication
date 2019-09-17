@@ -13,12 +13,12 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @Configuration
 public class CustomerServiceTestConfiguration {
 
-    // Not sure why this is needed.
+    // TODO find out why this is needed.
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 
-        messageSource.setBasename("i18n/messages");
+        messageSource.setBasename("i18n/messages"); // TODO find out what id does.
         messageSource.setUseCodeAsDefaultMessage(true);
 
         return messageSource;
