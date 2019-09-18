@@ -95,6 +95,8 @@ public class CustomerService implements CustomerApi {
             throw new CustomerNotFoundException(id);
         }
 
+        logger.info("Customer with ID: " + id + " was found.");
+
         return customer.get();
     }
 
@@ -114,8 +116,6 @@ public class CustomerService implements CustomerApi {
     }
 
     public List<Customer> getAllCustomers() {
-        List<Customer> customers = this.customerRepository.findAll();
-
-        return customers;
+        return customerRepository.findAll();
     }
 }

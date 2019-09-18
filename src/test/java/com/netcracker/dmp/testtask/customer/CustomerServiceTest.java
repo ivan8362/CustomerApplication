@@ -2,25 +2,40 @@ package com.netcracker.dmp.testtask.customer;
 
 import com.netcracker.dmp.testtask.customer.clients.EmployeeClient;
 import com.netcracker.dmp.testtask.customer.config.CustomerServiceTestConfiguration;
+import com.netcracker.dmp.testtask.customer.config.WebAppContext;
 import com.netcracker.dmp.testtask.customer.controllers.dto.CustomerDTO;
+import com.netcracker.dmp.testtask.customer.entities.Customer;
+import com.netcracker.dmp.testtask.customer.exceptions.CustomerAlreadyExistsException;
 import com.netcracker.dmp.testtask.customer.repositories.CustomerRepository;
 import com.netcracker.dmp.testtask.customer.services.impl.CustomerService;
 import org.junit.Before;
+import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.web.context.WebApplicationContext;
 
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Optional;
+
 import static junit.framework.Assert.assertNull;
 import static org.junit.Assert.fail;
+import static org.mockito.ArgumentMatchers.anyString;
 import static org.mockito.BDDMockito.willThrow;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.*;
+import static org.springframework.test.web.client.match.MockRestRequestMatchers.content;
+import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.get;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
+
 
 //@ActiveProfiles("test")
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -52,13 +67,13 @@ public class CustomerServiceTest {
         customerDTOMock = mock(CustomerDTO.class);
         customerRepositoryMock = mock(CustomerRepository.class);
     }
-/*
+    /*
     @Test(expected = CustomerAlreadyExistsException.class)
     public void whenCustomerIsCreated_thenSuccessMessage() {
         Customer customerMock = null;
         Optional<Customer> optionalCustomer = new Optional<>(customerMock);
 
-        Mockito.when(customerRepositoryMock.findByEmail(customerDTOMock.getEmail())).thenReturn(optionalCustomer);
+        when(customerRepositoryMock.findByEmail(customerDTOMock.getEmail())).thenReturn(optionalCustomer);
         willThrow(new CustomerAlreadyExistsException(anyString()))
                 .given(customerServiceMock)
                 .createCustomer(
@@ -78,7 +93,7 @@ public class CustomerServiceTest {
         } catch (CustomerAlreadyExistsException ex) {}
 
         // Assert
-        then(customerRepositoryMock).should(never()).insert(customerMock);
+        (customerRepositoryMock).should(never()).insert(customerMock);
     }
 
     @Test
@@ -137,5 +152,7 @@ public class CustomerServiceTest {
 
         verify(customerServiceMock, times(1)).getCustomerById("1");
         verifyNoMoreInteractions(customerServiceMock);
-    }*/
+    }
+
+     */
 }

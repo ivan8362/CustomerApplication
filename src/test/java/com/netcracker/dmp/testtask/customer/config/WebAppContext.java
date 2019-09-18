@@ -1,4 +1,4 @@
-package com.netcracker.dmp.testtask.customer;
+package com.netcracker.dmp.testtask.customer.config;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
 import org.springframework.context.annotation.Configuration;

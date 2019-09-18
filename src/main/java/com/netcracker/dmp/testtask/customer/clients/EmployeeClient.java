@@ -7,11 +7,8 @@ import org.springframework.web.client.RestTemplate;
 import org.springframework.web.util.UriComponents;
 import org.springframework.web.util.UriComponentsBuilder;
 
-import java.util.logging.Logger;
-
 @Component
 public class EmployeeClient {
-//    private static Logger log = Logger.getLogger(EmployeeClient.class.getName());
 
     @Autowired
     private RestTemplate restTemplate;

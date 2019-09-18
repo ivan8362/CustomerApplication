@@ -1,7 +1,6 @@
 /* Configuring The Test Class*/
 package com.netcracker.dmp.testtask.customer.config;
 
-import com.netcracker.dmp.testtask.customer.WebAppContext;
 import com.netcracker.dmp.testtask.customer.controllers.dto.CustomerDTO;
 import com.netcracker.dmp.testtask.customer.repositories.CustomerRepository;
 import com.netcracker.dmp.testtask.customer.services.impl.CustomerService;
