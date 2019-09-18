@@ -6,7 +6,7 @@ import lombok.Data;
  * This class is a Data Transfer Object which is received as HTTP request body during customer creation or update.
  * name - customer's legal name.
  * description - short description of customer.
- * email - customer's email address. No validation.
+ * email - customer's email address.
  * address - customer's physical or legal address.
  */
 @Data

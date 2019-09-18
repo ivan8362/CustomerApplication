@@ -1,43 +1,25 @@
 package com.netcracker.dmp.testtask.customer;
 
 import com.netcracker.dmp.testtask.customer.clients.EmployeeClient;
-import com.netcracker.dmp.testtask.customer.constants.MessageConstants;
+import com.netcracker.dmp.testtask.customer.config.CustomerServiceTestConfiguration;
 import com.netcracker.dmp.testtask.customer.controllers.dto.CustomerDTO;
-import com.netcracker.dmp.testtask.customer.entities.Customer;
-import com.netcracker.dmp.testtask.customer.exceptions.CustomerAlreadyExistsException;
 import com.netcracker.dmp.testtask.customer.repositories.CustomerRepository;
 import com.netcracker.dmp.testtask.customer.services.impl.CustomerService;
 import org.junit.Before;
-import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.mockito.Mock;
-import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.boot.test.context.SpringBootTest;
-import org.springframework.http.HttpStatus;
-import org.springframework.http.MediaType;
-import org.springframework.test.context.ActiveProfiles;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.test.web.servlet.MockMvc;
-import org.springframework.test.web.servlet.setup.MockMvcBuilders;
 import org.springframework.web.context.WebApplicationContext;
-import org.springframework.web.server.ResponseStatusException;
-
-import java.util.ArrayList;
-import java.util.List;
-import java.util.Optional;
 
 import static junit.framework.Assert.assertNull;
-import static org.hamcrest.Matchers.*;
 import static org.junit.Assert.fail;
 import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.BDDMockito.*;
 import static org.junit.Assert.assertThat;
-import static org.mockito.Mockito.*;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.*;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
+import static org.mockito.Mockito.mock;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 
 //@ActiveProfiles("test")
@@ -64,6 +46,13 @@ public class CustomerServiceTest {
     @Autowired
     private CustomerDTO customerDTOMock;
 
+    @Before
+    public void setup(){
+        customerServiceMock = mock(CustomerService.class);
+        customerDTOMock = mock(CustomerDTO.class);
+        customerRepositoryMock = mock(CustomerRepository.class);
+    }
+/*
     @Test(expected = CustomerAlreadyExistsException.class)
     public void whenCustomerIsCreated_thenSuccessMessage() {
         Customer customerMock = null;
@@ -77,6 +66,7 @@ public class CustomerServiceTest {
                         customerDTOMock.getDescription(),
                         customerDTOMock.getEmail(),
                         customerDTOMock.getAddress());
+
         // Act
         try {
             customerServiceMock.createCustomer(
@@ -86,6 +76,7 @@ public class CustomerServiceTest {
                     customerDTOMock.getAddress());
             fail("Should throw exceptions");
         } catch (CustomerAlreadyExistsException ex) {}
+
         // Assert
         then(customerRepositoryMock).should(never()).insert(customerMock);
     }
@@ -146,5 +137,5 @@ public class CustomerServiceTest {
 
         verify(customerServiceMock, times(1)).getCustomerById("1");
         verifyNoMoreInteractions(customerServiceMock);
-    }
+    }*/
 }

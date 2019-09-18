@@ -1,5 +1,6 @@
 package com.netcracker.dmp.testtask.customer;
 
+import com.netcracker.dmp.testtask.customer.config.CustomerServiceTestConfiguration;
 import com.netcracker.dmp.testtask.customer.controllers.dto.CustomerDTO;
 import com.netcracker.dmp.testtask.customer.entities.Customer;
 import com.netcracker.dmp.testtask.customer.services.impl.CustomerService;
@@ -24,7 +25,7 @@ import static org.springframework.test.web.servlet.request.MockMvcRequestBuilder
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
-@ContextConfiguration(classes = {CustomerServiceTestConfiguration.class})
+@ContextConfiguration(classes = {CustomerServiceTestConfiguration.class, WebAppContext.class})
 @WebAppConfiguration
 public class CustomerServiceTestAdd {
     private MockMvc mockMvc;

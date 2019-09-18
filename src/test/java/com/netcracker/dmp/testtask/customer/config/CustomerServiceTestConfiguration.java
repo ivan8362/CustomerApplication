@@ -1,4 +1,4 @@
-package com.netcracker.dmp.testtask.customer;
+package com.netcracker.dmp.testtask.customer.config;
 
 import com.netcracker.dmp.testtask.customer.services.impl.CustomerService;
 import org.mockito.Mockito;
@@ -13,12 +13,12 @@ import org.springframework.context.support.ResourceBundleMessageSource;
 @Configuration
 public class CustomerServiceTestConfiguration {
 
-    // TODO find out why this is needed.
+    /* TODO find out why this is needed. */
     @Bean
     public MessageSource messageSource() {
         ResourceBundleMessageSource messageSource = new ResourceBundleMessageSource();
 
-        messageSource.setBasename("i18n/messages"); // TODO find out what id does.
+        messageSource.setBasename("i18n/messages"); /* TODO find out what id does. */
         messageSource.setUseCodeAsDefaultMessage(true);
 
         return messageSource;
