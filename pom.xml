@@ -11,7 +11,7 @@
 	<artifactId>customer-application</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>Customer Application</name>
-	<url>https://github.com/ivan8362/NetcrackerTestTask</url>
+	<url>https://github.com/ivan8362/CustomerApplication</url>
 	<description>This application is a test task for Digital Marketplace and provides REST API to create, get, update, delete customers.
 	This app interacts with employee application</description>
 

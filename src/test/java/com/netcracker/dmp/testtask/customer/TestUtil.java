@@ -10,10 +10,10 @@ import java.nio.charset.Charset;
 import java.io.IOException;
 
 public class TestUtil {
-    public static byte[] convertObjectToJsonBytes(Object object) throws IOException {
+    /*public static byte[] convertObjectToJsonBytes(Object object) throws IOException {
         ObjectMapper mapper = new ObjectMapper();
         mapper.setSerializationInclusion(JsonInclude.Include.NON_NULL);
         // When writing to json strings/bytes nulls will be ignored.
         return mapper.writeValueAsBytes(object);
-    }
+    }*/
 }

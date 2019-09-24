@@ -24,8 +24,7 @@ public class CustomerController {
     @PostMapping(value = "/", produces = {MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE},
             consumes = { MediaType.APPLICATION_JSON_VALUE, MediaType.APPLICATION_JSON_UTF8_VALUE })
     public Customer createCustomer(@RequestBody CustomerDTO customerDTO){
-        logger.debug("A client called POST /v1/customers/ REST API with parameters: "
-                + customerDTO.toString());
+        logger.debug("A client called POST /v1/customers/ REST API with parameters: " + customerDTO);
 
         Customer customer = customerApi.createCustomer(customerDTO.getName(), customerDTO.getDescription(),
                 customerDTO.getEmail(), customerDTO.getAddress());
@@ -55,6 +54,7 @@ public class CustomerController {
         Customer customer = customerApi.updateCustomer(id, customerDTO.getName(),
                 customerDTO.getDescription(),
                 customerDTO.getEmail(), customerDTO.getAddress());
+        logger.debug("Customer with ID: " + id + " was successfully updated.");
 
         return customer;
     }
@@ -67,7 +67,7 @@ public class CustomerController {
         return customerApi.getCustomerById(id);
     }
 
-    @ResponseStatus(value = HttpStatus.OK)
+    @ResponseStatus(value = HttpStatus.NO_CONTENT)
     @DeleteMapping(value = "/{id}", produces = {MediaType.APPLICATION_JSON_VALUE})
     public void deleteCustomer(@PathVariable(name = "id") String id){
         logger.debug("A client called DELETE /v1/customers/" + id + "/ REST API with no parameters.");

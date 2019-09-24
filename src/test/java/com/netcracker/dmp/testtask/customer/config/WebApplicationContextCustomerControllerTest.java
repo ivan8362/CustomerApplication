@@ -21,7 +21,7 @@ import org.springframework.web.context.WebApplicationContext;
 //@ContextConfiguration(locations = {"classpath:testContext.xml", "classpath:exampleApplicationContext-web.xml"})
 @WebAppConfiguration
 public class WebApplicationContextCustomerControllerTest {
-    private MockMvc mockMvc;
+    /*private MockMvc mockMvc;
 
     @Autowired
     private CustomerService customerServiceMock;
@@ -37,11 +37,11 @@ public class WebApplicationContextCustomerControllerTest {
 
     @Before
     public void setUp() {
-        /* We have to reset our mock between tests because the mock objects
+        *//* We have to reset our mock between tests because the mock objects
         are managed by the Spring container. If we would not reset them,
-        stubbing and verified behavior would "leak" from one test to another. */
+        stubbing and verified behavior would "leak" from one test to another. *//*
         Mockito.reset(customerServiceMock);
 
         mockMvc = MockMvcBuilders.webAppContextSetup(webApplicationContext).build();
-    }
+    }*/
 }

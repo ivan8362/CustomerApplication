@@ -1,2 +1,0 @@
-<mongo:mongo-client id="mongoClient" host="localhost" />
-<mongo:db-factory id="mongoDbFactory" dbname="test" mongo-ref="mongoClient" />

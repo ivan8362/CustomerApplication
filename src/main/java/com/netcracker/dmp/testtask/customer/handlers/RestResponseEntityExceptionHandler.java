@@ -1,5 +1,8 @@
-package com.netcracker.dmp.testtask.customer.exceptions;
+package com.netcracker.dmp.testtask.customer.handlers;
 
+import com.netcracker.dmp.testtask.customer.exceptions.CustomerAlreadyExistsException;
+import com.netcracker.dmp.testtask.customer.exceptions.CustomerNotFoundException;
+import com.netcracker.dmp.testtask.customer.exceptions.EmployeesAreNotDeletedException;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -20,15 +23,8 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         hashMap.put("userMessage", ex.getMessage());
         hashMap.put("status", "404");
         hashMap.put("error", "Not Found");
-        StringBuilder builder = new StringBuilder("{\n \"error\" : {\n");
 
-        for (Map.Entry<String, String> entry: hashMap.entrySet()) {
-            builder.append("\"" + entry.getKey() + "\" : \"" + entry.getValue() + "\"\n");
-        }
-
-        builder.append("}\n}");
-
-        return handleExceptionInternal(ex, builder, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
+        return handleExceptionInternal(ex, hashMap, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 
     @ExceptionHandler (value = {CustomerAlreadyExistsException.class})
@@ -37,14 +33,17 @@ public class RestResponseEntityExceptionHandler extends ResponseEntityExceptionH
         hashMap.put("userMessage", ex.getMessage());
         hashMap.put("status", "409");
         hashMap.put("error", "Conflict");
-        StringBuilder builder = new StringBuilder("{\n \"error\" : {\n");
 
-        for (Map.Entry<String, String> entry: hashMap.entrySet()) {
-            builder.append("\"" + entry.getKey() + "\" : \"" + entry.getValue() + "\"\n");
-        }
+        return handleExceptionInternal(ex, hashMap, new HttpHeaders(), HttpStatus.CONFLICT, request);
+    }
 
-        builder.append("}\n}");
+    @ExceptionHandler (value = {EmployeesAreNotDeletedException.class})
+    protected ResponseEntity<Object> handleConflictEmployeesNotDeleted(RuntimeException ex, WebRequest request) {
+        HashMap<String, String> hashMap = new HashMap<>();
+        hashMap.put("userMessage", ex.getMessage());
+        hashMap.put("status", "404");
+        hashMap.put("error", "Not Found");
 
-        return handleExceptionInternal(ex, builder, new HttpHeaders(), HttpStatus.CONFLICT, request);
+        return handleExceptionInternal(ex, hashMap, new HttpHeaders(), HttpStatus.NOT_FOUND, request);
     }
 }

@@ -19,7 +19,7 @@ import java.util.Properties;
         "com.netcracker.dmp.testtask.customer.controllers.CustomerController"
 })
 public class WebAppContext extends WebMvcConfigurerAdapter {
-
+/*
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
@@ -63,5 +63,5 @@ public class WebAppContext extends WebMvcConfigurerAdapter {
         viewResolver.setSuffix(".jsp");
 
         return viewResolver;
-    }
+    }*/
 }

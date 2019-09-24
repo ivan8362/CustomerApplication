@@ -8,7 +8,7 @@ public interface CustomerApi {
 
     /**
      * This method creates a customer and saves information about customer in persistent storage.
-     * In case customer with the same email exists, API will return an error.
+     * In case customer with the same email exists, the method will return an error.
      *
      * @param name customer's legal name.
      * @param description short description of customer.
@@ -20,8 +20,7 @@ public interface CustomerApi {
 
     /**
      * This method updates customer's properties in persistent storage.
-     * You have to specify some parameters, some can be left unchanged.
-     * In case customer with such customerId does not exists, API will return an error.
+     * In case customer with such customerId does not exists, the method will return an error.
      * @param id - customer ID.
      * @param name - customer's legal name.
      * @param description - short description of customer.
@@ -45,8 +44,8 @@ public interface CustomerApi {
     void deleteCustomer(String id);
 
     /**
-     * This method returns List of all customers with all details.
-     * @return List<Customer>
+     * This method returns List of all customers.
+     * @return List of Customers with parameters: id, name, description, email, address.
      */
     List<Customer> getAllCustomers();
 }
