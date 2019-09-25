@@ -2,7 +2,6 @@ package com.netcracker.dmp.testtask.customer;
 
 import com.netcracker.dmp.testtask.customer.clients.EmployeeClient;
 import com.netcracker.dmp.testtask.customer.config.CustomerServiceTestConfiguration;
-import com.netcracker.dmp.testtask.customer.controllers.dto.CustomerDTO;
 import com.netcracker.dmp.testtask.customer.entities.Customer;
 import com.netcracker.dmp.testtask.customer.exceptions.CustomerAlreadyExistsException;
 import com.netcracker.dmp.testtask.customer.exceptions.CustomerNotFoundException;
@@ -10,11 +9,8 @@ import com.netcracker.dmp.testtask.customer.repositories.CustomerRepository;
 import com.netcracker.dmp.testtask.customer.services.impl.CustomerService;
 import org.junit.Test;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
-import org.mockito.Mock;
 import org.mockito.Mockito;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.http.MediaType;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.TestPropertySource;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
@@ -23,17 +19,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 
-import static junit.framework.Assert.assertNull;
-import static org.hamcrest.Matchers.any;
-import static org.hamcrest.Matchers.is;
-import static org.junit.Assert.*;
-import static org.mockito.ArgumentMatchers.anyString;
-import static org.mockito.BDDMockito.willThrow;
-import static org.mockito.BDDMockito.then;
-import static org.mockito.Mockito.*;
+import static org.junit.Assert.assertArrayEquals;
+import static org.junit.Assert.assertEquals;
+import static org.mockito.Mockito.verify;
+import static org.mockito.Mockito.when;
 import static org.mockito.internal.verification.VerificationModeFactory.times;
-import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
-import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.*;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(classes = {CustomerServiceTestConfiguration.class})
@@ -64,38 +54,6 @@ public class CustomerServiceTest {
                 description, customer.getDescription());
         assertEquals("Email property value does not match an expected value.", email, customer.getEmail());
         assertEquals("Address property value does not match an expected value.", address, customer.getAddress());
-
-        /*CustomerDTO customerDTO = new CustomerDTO("name", "description", "email", "address");
-
-        Customer added = new Customer("name", "description", "email", "address");
-        when(customerService.createCustomer(anyString(), anyString(), anyString(), anyString()))
-                .thenReturn(added);
-
-        mockMvc.perform(post("/v1/customers/")
-                .contentType(MediaType.APPLICATION_JSON_VALUE)
-                .content(TestUtil.convertObjectToJsonBytes(customerDTO))
-        )
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$.id", is(any(String.class))))
-                .andExpect(jsonPath("$.name", is("name")))
-                .andExpect(jsonPath("$.description", is("description")))
-                .andExpect(jsonPath("$.email", is("email")))
-                .andExpect(jsonPath("$.address", is("address")));
-
-        ArgumentCaptor<CustomerDTO> dtoCaptor = ArgumentCaptor.forClass(CustomerDTO.class);
-        verify(customerService, times(1)).createCustomer(
-                dtoCaptor.capture().getName(),
-                dtoCaptor.capture().getDescription(),
-                dtoCaptor.capture().getEmail(),
-                dtoCaptor.capture().getAddress());
-        verifyNoMoreInteractions(customerService);
-
-        CustomerDTO dtoArgument = dtoCaptor.getValue();
-        assertThat(dtoArgument.getDescription(), is("description"));
-        assertThat(dtoArgument.getName(), is("name"));
-        assertThat(dtoArgument.getEmail(), is("email"));
-        assertThat(dtoArgument.getAddress(), is("address"));*/
     }
 
     @Test(expected = CustomerAlreadyExistsException.class)
@@ -131,30 +89,6 @@ public class CustomerServiceTest {
         verify(customerRepository).findAll();
         assertArrayEquals("The list of customers given to the method does not match returned list",
                 customers.toArray(), allCustomers.toArray());
-
-        /*Customer first = new Customer("name", "description", "email", "address");
-        Customer second = new Customer("name1", "description1", "email1", "address1");
-
-        List<Customer> customers = new ArrayList<Customer>();
-        customers.add(first);
-        customers.add(second);
-        when(customerService.getAllCustomers()).thenReturn(customers);
-        mockMvc.perform(get("/v1/customers/"))
-                .andExpect(status().isOk())
-                .andExpect(content().contentType(MediaType.APPLICATION_JSON_VALUE))
-                .andExpect(jsonPath("$", hasSize(2)))
-                .andExpect(jsonPath("$[0].name", is("name")))
-                .andExpect(jsonPath("$[0].description", is("description")))
-                .andExpect(jsonPath("$[0].email", is("email")))
-                .andExpect(jsonPath("$[0].address", is("address")))
-                .andExpect(jsonPath("$[1].name", is("name1")))
-                .andExpect(jsonPath("$[1].description", is("description1")))
-                .andExpect(jsonPath("$[1].email", is("email1")))
-                .andExpect(jsonPath("$[1].address", is("address1")));
-
-        verify(customerService, times(1)).getAllCustomers();
-        verifyNoMoreInteractions(customerService);*/
-
     }
 
     @Test
